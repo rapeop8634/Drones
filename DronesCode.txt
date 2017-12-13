@@ -1,0 +1,83 @@
+CREATE table weather_conditions (
+id serial PRIMARY KEY, temperature int,
+humidity int, wind_velocity int,
+brightness int, clouds varchar(3)
+atmospheric_pressure int, precipitation int);
+
+CREATE table temporal_conditions (
+id serial PRIMARY KEY, time_taken datetime);
+
+CREATE table GCP (
+Id serial PRIMARY KEY, type varchar(60),
+Notes varchar (200), close_up_photo raster,
+Point_perspective_photo raster);
+
+CREATE table LIDAR (
+Id serial PRIMARY KEY, type varchar(60),
+Notes varchar(200), close_up_photo raster,
+Point_perspective_photo raster);
+
+CREATE table Reference (
+Id serial PRIMARY KEY, type varchar(60),
+Notes varchar(200), close_up_photo raster),
+Point_perspective_photo raster);
+
+CREATE table Drone_photo (
+Id serial PRIMARY KEY, latitude varchar(30),
+longitude varchar(30),
+Photo raster);
+
+CREATE table Maps (
+Id serial PRIMARY KEY,
+Mosaic raster, DEM raster);
+
+CREATE table Drone_Flights (
+Id serial PRIMARY KEY, collector varchar (60),
+datetime REFERENCES temporal_conditions(time_taken) ON DELETE CASCADE ON UPDATE CASCADE,
+latitude REFERENCES drone_photo(latitude) ON DELETE CASCADE ON UPDATE CASCADE,
+Longitude REFERENCES drone_photo(longitude) ON DELETE CASCADE ON UPDATE CASCADE), 
+Length int, area int, height_drone int, altitude int,
+permit int, permit_copy raster);
+
+CREATE table drone_photo_metadata (
+Id serial PRIMARY KEY, 
+dronephotoid int REFERENCES drone_photo(id) ON DELETE CASCADE ON UPDATE CASCADE, 
+dronephototaken integer REFERENCES drone_flights(datetime) ON DELETE CASCADE ON UPDATE CASCADE, 
+Program_name varchar(360), dimensions varchar (30), 
+Pixels int, dpi int, bit_depth int, horiz_res int, vertic_res int, 
+Camera_make varchar (360), Camera_model varchar (360),
+Exposure_time varchar (30), ISO_Speed int, 
+Focal_length int, flash_mode varchar(1),
+Latitude REFERENCES drone_photo(latitude) ON DELETE CASCADE ON UPDATE CASCADE,
+Longitude REFERENCES drone_photo(longitude) ON DELETE CASCADE ON UPDATE CASCADE), 
+Altitude int, size_photo int);
+
+### INSERT STATEMENTS ###
+
+INSERT INTO weather_conditions
+VALUES
+(73, 86, 20, 10, "NO", 766, 0),
+(80, 82, 3, 8, "YES", 740, 0),
+(64, 70, 25, 5, "YES", 730, 5);
+
+INSERT INTO Drone_Photo
+VALUES
+(34.233391, -83.866029),
+(34.235561, -83.866984),
+(34.234450, -83.868183);
+
+INSERT INTO Maps 
+(Mosaic)
+VALUES
+('U:\Shared\GIS\ClassFiles\zmiller\GISC 4903_v2\Drone Flights\10-1-2017 Tumbling\Orthomosaic Photo\OUTPUT.tif'); 
+
+### QUERIES ###
+
+SELECT * FROM weather_conditions
+WHERE clouds = "no"
+
+SELECT * FROM weather_conditions
+WHERE precipitation = 5
+
+
+
